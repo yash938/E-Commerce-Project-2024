@@ -1,0 +1,9 @@
+.Nav li {
+  display: flex;
+  text-decoration: none
+}
+
+.userCredentail i {
+     width: 40px;
+     height: 40px;
+}
