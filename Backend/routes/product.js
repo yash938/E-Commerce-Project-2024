@@ -2,25 +2,20 @@ const express = require("express");
 const router = express.Router();
 
 const Product = require("../models/productModel");
+const ErrorHander = require("../HandlingError/errorHandler");
+const catchAsyncError  = require("../middleware/catchAssyncError")
 
 
 //create product --admin
-router.post("/createProduct", async (req, res) => {
-    try {
+router.post("/createProduct",catchAsyncError( async (req, res) => {
+  
         const product = await Product.create(req.body);
         res.status(200).json({
             success: true,
             product
         });
-    } catch (error) {
-        console.error("Error creating product:", error);
-        res.status(400).json({
-            success: false,
-            message: error.message,
-            errors: error.errors
-        });
-    }
-});
+    
+}))
 
 
 //getall product
@@ -58,10 +53,7 @@ router.put("/update/:id",async (req,res)=>{
 
 
     if(!product){
-        return res.status(500).json({
-            success:false,
-            message:"product not found"
-        })
+        return next(new ErrorHander("not updated product",404))
     }
      product = await Product.findByIdAndUpdate(req.params.id,req.body,{
         new:true,
