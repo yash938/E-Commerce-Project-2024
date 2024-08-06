@@ -3,7 +3,8 @@ const router = express.Router();
 
 const Product = require("../models/productModel");
 const ErrorHander = require("../HandlingError/errorHandler");
-const catchAsyncError  = require("../middleware/catchAssyncError")
+const catchAsyncError  = require("../middleware/catchAssyncError");
+const apiFeatures = require("../HandlingError/apiFeatures");
 
 
 //create product --admin
@@ -20,7 +21,8 @@ router.post("/createProduct",catchAsyncError( async (req, res) => {
 
 //getall product
 router.get("/getallProducts",async(req,res)=>{
-    const products = await Product.find();
+   const ApiFeatures = new apiFeatures(Product.find(), req.query).search().filter()
+    const products = await ApiFeatures.query;
 
     res.status(200).json({
         success:true,

@@ -19,6 +19,17 @@ app.set("view engine", 'ejs');
 
 connectDB();
 
+
+process.on("uncaughtException",(err)=>{
+    console.log(`Error : ${err.message}`);
+
+    console.log("shutting down the server due to uncaughtException");
+   
+        process.exit(1);
+   
+})
+
 app.listen(PORT, () => {
     console.log("Server is listening on PORT " + PORT);
 });
+
